@@ -6,10 +6,8 @@ const client = new MongoClient(process.env.BETTER_AUTH_DATABASE_URL)
 const db = client.db('kurbanihat')
 
 export const auth = betterAuth({
-  database: mongodbAdapter(db, {
-    emailAndPassword: {
-      enabled: true
-    },
-    client
-  })
+  database: mongodbAdapter(db), // Only the DB goes here
+  emailAndPassword: {
+    enabled: true // This must be outside the adapter
+  }
 })

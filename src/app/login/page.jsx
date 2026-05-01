@@ -1,4 +1,35 @@
+"use client";
+import { authClient } from "@/lib/auth-client";
+import { useForm } from "react-hook-form";
+
 const LoginPage = () => {
+  // Initialize the hook
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  // Handle form submission
+  const onSubmit = async (formdata) => {
+    const { data, error } = await authClient.signIn.email({
+      email: formdata.email,
+      password: formdata.password,
+      rememberMe: true,
+      callbackURL: "/",
+    });
+
+    if (error) {
+      // 4. Alert the user why it failed (e.g., "Invalid credentials")
+      alert(error.message || "Failed to login");
+      return;
+    }
+
+    // 5. If successful, redirect or refresh
+    router.push("/");
+    router.refresh();
+  };
+
   return (
     <div className="min-h-screen bg-base-200 flex items-center justify-center p-4">
       <div className="card w-full max-w-sm bg-base-100 shadow-xl">
@@ -10,7 +41,7 @@ const LoginPage = () => {
             Login to your account
           </p>
 
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             {/* Email Field */}
             <div className="form-control w-full">
               <label className="label">
@@ -19,9 +50,22 @@ const LoginPage = () => {
               <input
                 type="email"
                 placeholder="email@example.com"
-                className="input input-bordered w-full focus:input-primary"
-                required
+                className={`input input-bordered w-full focus:input-primary ${
+                  errors.email ? "input-error" : ""
+                }`}
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid email address",
+                  },
+                })}
               />
+              {errors.email && (
+                <span className="text-error text-xs mt-1">
+                  {errors.email.message}
+                </span>
+              )}
             </div>
 
             {/* Password Field */}
@@ -32,9 +76,22 @@ const LoginPage = () => {
               <input
                 type="password"
                 placeholder="••••••••"
-                className="input input-bordered w-full focus:input-primary"
-                required
+                className={`input input-bordered w-full focus:input-primary ${
+                  errors.password ? "input-error" : ""
+                }`}
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters",
+                  },
+                })}
               />
+              {errors.password && (
+                <span className="text-error text-xs mt-1">
+                  {errors.password.message}
+                </span>
+              )}
               <label className="label mt-1">
                 <a
                   href="#"
@@ -47,7 +104,9 @@ const LoginPage = () => {
 
             {/* Login Button */}
             <div className="form-control mt-6">
-              <button className="btn btn-primary w-full">Login</button>
+              <button type="submit" className="btn btn-primary w-full">
+                Login
+              </button>
             </div>
           </form>
 
@@ -57,7 +116,12 @@ const LoginPage = () => {
           </div>
 
           {/* Social Login Button */}
-          <button className="btn btn-outline btn-neutral w-full gap-2">
+          <button
+            type="button"
+            className="btn btn-outline btn-neutral w-full gap-2"
+            onClick={() => console.log("Google Login Triggered")}
+          >
+            {/* SVG Path remains same */}
             <svg xmlns="http://w3.org" className="h-5 w-5" viewBox="0 0 48 48">
               <path
                 fill="#FFC107"
