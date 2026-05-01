@@ -20,7 +20,7 @@ const AnimalDetailsPage = async ({ params }) => {
               alt={animal.name}
               width={800}
               height={400}
-              className="w-full h-[400px] object-cover"
+              className="w-full h-100 object-cover"
             />
             <div className="p-8">
               <div className="flex justify-between items-start mb-4">
