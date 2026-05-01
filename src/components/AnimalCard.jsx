@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const AnimalCard = ({ animal }) => {
@@ -15,8 +16,15 @@ const AnimalCard = ({ animal }) => {
       />
 
       <div className="px-6 py-4">
-        {/* Title */}
-        <h2 className="font-bold text-2xl mb-2 text-gray-800">{animal.name}</h2>
+        <div className="flex justify-between items-center mb-2">
+          {/* Title */}
+          <h2 className="font-bold text-2xl text-gray-800">{animal.name}</h2>
+
+          {/* Animal Price */}
+          <span className="text-lg font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
+            ${animal.price}
+          </span>
+        </div>
 
         {/* Description */}
         <p className="text-gray-600 text-base leading-relaxed line-clamp-3">
@@ -26,11 +34,8 @@ const AnimalCard = ({ animal }) => {
 
       {/* Action Area */}
       <div className="px-6 pt-2 pb-6">
-        <button
-          onClick={() => console.log(`Opening details for ${animal.name}`)}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 shadow-md"
-        >
-          View Details
+        <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 shadow-md">
+          <Link href={`/animals/${animal.id}`}>View Details</Link>
         </button>
       </div>
     </div>
