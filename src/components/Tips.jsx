@@ -1,4 +1,4 @@
-import { CheckCircle, Info, Star } from "lucide-react"; // Optional: install lucide-react or use SVG
+import { CheckCircle, Info, Star } from "lucide-react";
 
 const Tips = () => {
   const breeds = [
