@@ -1,55 +1,65 @@
 "use client";
 import { authClient } from "@/lib/auth-client";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { FcGoogle } from "react-icons/fc";
 
 const RegisterPage = () => {
-  // Initialize the hook
+  const router = useRouter();
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
 
-  // Handle form submission
   const onSubmit = async (formData) => {
     const { data, error } = await authClient.signUp.email({
       email: formData.email,
       password: formData.password,
-      name: formData.name, // Pass directly
-      image: formData.photoURL, // Better Auth uses 'image' key
-      callbackURL: "/animals",
+      name: formData.name,
+      image: formData.photoURL,
+      callbackURL: "/login",
     });
 
     if (error) {
-      // This will tell you EXACTLY why it's not submitting
-      console.error("Submission failed:", error.message);
+      toast.error(error.message || "Registration failed. Please try again.");
       return;
     }
 
-    console.log("Success:", data);
+    toast.success("Account created successfully! Please login.");
+    router.push("/login");
+  };
+
+  const handleGoogleLogin = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/",
+    });
   };
 
   return (
     <div className="min-h-screen bg-base-200 flex items-center justify-center p-4">
-      <div className="card w-full max-w-md bg-base-100 shadow-xl">
+      <div className="card w-full max-w-md bg-base-100 shadow-xl border border-base-300">
         <div className="card-body">
-          <h2 className="card-title text-2xl font-bold justify-center mb-2">
-            Create Account
+          <h2 className="card-title text-3xl font-black justify-center mb-2 text-primary">
+            Register
           </h2>
-          <p className="text-center text-sm text-base-content/70 mb-4">
-            Join us today!
+          <p className="text-center text-sm text-base-content/60 mb-6">
+            Create your account to start booking
           </p>
 
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {/* Name Field */}
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="form-control w-full">
               <label className="label">
-                <span className="label-text font-semibold">Full Name</span>
+                <span className="label-text font-bold">Full Name</span>
               </label>
               <input
                 type="text"
-                placeholder="John Doe"
-                className={`input input-bordered w-full focus:input-primary ${errors.name ? "input-error" : ""}`}
+                placeholder="Your Name"
+                className={`input input-bordered w-full focus:input-primary ${
+                  errors.name ? "input-error" : ""
+                }`}
                 {...register("name", { required: "Name is required" })}
               />
               {errors.name && (
@@ -59,15 +69,16 @@ const RegisterPage = () => {
               )}
             </div>
 
-            {/* Email Field */}
-            <div className="form-control w-full mt-4">
+            <div className="form-control w-full">
               <label className="label">
-                <span className="label-text font-semibold">Email</span>
+                <span className="label-text font-bold">Email Address</span>
               </label>
               <input
                 type="email"
-                placeholder="email@example.com"
-                className={`input input-bordered w-full focus:input-primary ${errors.email ? "input-error" : ""}`}
+                placeholder="example@mail.com"
+                className={`input input-bordered w-full focus:input-primary ${
+                  errors.email ? "input-error" : ""
+                }`}
                 {...register("email", {
                   required: "Email is required",
                   pattern: {
@@ -83,28 +94,28 @@ const RegisterPage = () => {
               )}
             </div>
 
-            {/* Photo URL Field */}
-            <div className="form-control w-full mt-4">
+            <div className="form-control w-full">
               <label className="label">
-                <span className="label-text font-semibold">Photo URL</span>
+                <span className="label-text font-bold">Photo URL</span>
               </label>
               <input
                 type="url"
-                placeholder="https://example.com"
+                placeholder="https://example.com/photo.jpg"
                 className="input input-bordered w-full focus:input-primary"
                 {...register("photoURL")}
               />
             </div>
 
-            {/* Password Field */}
-            <div className="form-control w-full mt-4">
+            <div className="form-control w-full">
               <label className="label">
-                <span className="label-text font-semibold">Password</span>
+                <span className="label-text font-bold">Password</span>
               </label>
               <input
                 type="password"
                 placeholder="••••••••"
-                className={`input input-bordered w-full focus:input-primary ${errors.password ? "input-error" : ""}`}
+                className={`input input-bordered w-full focus:input-primary ${
+                  errors.password ? "input-error" : ""
+                }`}
                 {...register("password", {
                   required: "Password is required",
                   minLength: {
@@ -120,17 +131,37 @@ const RegisterPage = () => {
               )}
             </div>
 
-            {/* Register Button */}
             <div className="form-control mt-8">
-              <button type="submit" className="btn btn-primary w-full text-lg">
-                Register
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="btn btn-primary w-full text-lg shadow-lg hover:shadow-primary/20"
+              >
+                {isSubmitting ? (
+                  <span className="loading loading-spinner"></span>
+                ) : (
+                  "Register"
+                )}
               </button>
             </div>
           </form>
 
-          <p className="text-center text-sm mt-6">
+          <div className="divider text-xs uppercase text-base-content/40 font-bold my-6">
+            OR REGISTER WITH
+          </div>
+
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            className="btn btn-outline border-base-300 hover:bg-base-200 hover:text-base-content w-full gap-3 font-bold"
+          >
+            <FcGoogle size={24} />
+            Google Account
+          </button>
+
+          <p className="text-center text-sm mt-8 text-base-content/70">
             Already have an account?{" "}
-            <a href="/login" className="link link-primary font-semibold">
+            <a href="/login" className="link link-primary font-bold">
               Login here
             </a>
           </p>

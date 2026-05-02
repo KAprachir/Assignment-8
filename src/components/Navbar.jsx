@@ -1,11 +1,15 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "@/assets/logo.png";
 import Navlink from "./Navlink";
+import { authClient } from "@/lib/auth-client";
+import { User } from "lucide-react";
 
 const Navbar = () => {
+  const { data: session } = authClient.useSession();
+
   return (
-    // Added 'sticky' and 'backdrop-blur' for a premium modern feel
     <div className="sticky top-0 z-50 w-full border-b border-base-200 bg-base-100/80 backdrop-blur-md">
       <div className="navbar max-w-10/12 mx-auto px-4 sm:px-6 lg:px-8">
         <div className="navbar-start">
@@ -38,7 +42,6 @@ const Navbar = () => {
             </ul>
           </div>
 
-          {/* Logo container with better scaling */}
           <Link href="/" className="flex items-center gap-2">
             <Image
               src={logo}
@@ -58,13 +61,34 @@ const Navbar = () => {
         </div>
 
         <div className="navbar-end gap-2">
-          {/* Improved button styling */}
-          <Link
-            href="/login"
-            className="btn btn-primary btn-sm md:btn-md shadow-md hover:shadow-lg transition-all "
-          >
-            Log In
-          </Link>
+          {session ? (
+            <div className="flex items-center gap-2">
+              <Link
+                href="/my-profile"
+                className="btn btn-ghost btn-circle btn-sm md:btn-md"
+              >
+                <User size={20} />
+              </Link>
+              <button
+                onClick={async () => await authClient.signOut()}
+                className="btn btn-primary btn-sm md:btn-md shadow-md hover:shadow-lg transition-all"
+              >
+                Log Out
+              </button>
+            </div>
+          ) : (
+            <div className="flex gap-2">
+              <Link href="/login" className="btn btn-ghost btn-sm md:btn-md">
+                Log In
+              </Link>
+              <Link
+                href="/register"
+                className="btn btn-primary btn-sm md:btn-md shadow-md hover:shadow-lg transition-all"
+              >
+                Register
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>

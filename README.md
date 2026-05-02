@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# QurbaniHat – Livestock Booking Platform
 
-## Getting Started
+QurbaniHat is a modern livestock marketplace designed for the Eid-ul-Adha season. It connects buyers with authentic farms, allowing users to explore, filter, and book healthy animals for their religious sacrifice.
 
-First, run the development server:
+## 🚀 Live Site
+[View Live Site](https://qurbani-hat.vercel.app)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Key Features
+- **Modern Marketplace**: Browse a wide collection of cows, bulls, goats, and sheep.
+- **Advanced Filtering**: Sort animals by price (Low to High / High to Low) and search by name.
+- **Authentication**: Secure login and registration with Email/Password and Google Social Login.
+- **Detailed Profiles**: Users can view and update their profile information (Name and Photo).
+- **Animal Booking**: Private booking system for authenticated users with instant feedback.
+- **Responsive Design**: Fully optimized for mobile, tablet, and desktop views.
+- **Animations**: Smooth transitions and micro-animations using `Animate.css`.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Technologies Used
+- **Framework**: Next.js 15
+- **Styling**: Tailwind CSS & DaisyUI
+- **Authentication**: Better Auth (MongoDB Adapter)
+- **State Management**: React Hook Form
+- **Notifications**: React Toastify
+- **Animations**: Animate.css, Lucide React
+- **Icons**: React Icons, Lucide React
+- **Database**: MongoDB
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📦 Getting Started
+1. Clone the repository: `git clone <repo-url>`
+2. Install dependencies: `npm install`
+3. Set up environment variables in `.env`:
+   ```env
+   BETTER_AUTH_SECRET=
+   BETTER_AUTH_URL=
+   MONGODB_URI=
+   GOOGLE_CLIENT_ID=
+   GOOGLE_CLIENT_SECRET=
+   ```
+4. Run the development server: `npm run dev`

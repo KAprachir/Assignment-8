@@ -1,6 +1,9 @@
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import { getAnimal } from "@/lib/getanimal";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import BookingForm from "@/components/BookingForm";
 
 const AnimalDetailsPage = async ({ params }) => {
   const { id } = await params;
@@ -9,10 +12,17 @@ const AnimalDetailsPage = async ({ params }) => {
 
   if (!animal) return notFound();
 
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect("/login");
+  }
+
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-10">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* LEFT: Animal Details (2 columns wide on large screens) */}
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
             <Image
@@ -64,75 +74,8 @@ const AnimalDetailsPage = async ({ params }) => {
           </div>
         </div>
 
-        {/* RIGHT: Booking Form (Sticky) */}
         <div className="lg:col-span-1">
-          <div className="bg-white p-8 rounded-3xl shadow-xl border border-green-100 sticky top-10">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Book this Animal
-            </h2>
-
-            <form className="space-y-4">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="John Doe"
-                  className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none transition"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  placeholder="john@example.com"
-                  className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none transition"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  placeholder="017XXXXXXXX"
-                  className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none transition"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
-                  Shipping Address
-                </label>
-                <textarea
-                  rows={3}
-                  placeholder="House, Road, Area..."
-                  className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none transition"
-                  required
-                />
-              </div>
-
-              <div className="pt-4">
-                <button
-                  type="submit"
-                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-green-200 transition-all active:scale-[0.98]"
-                >
-                  Confirm Booking Request
-                </button>
-                <p className="text-center text-gray-400 text-xs mt-4">
-                  No payment required yet. The seller will call you shortly.
-                </p>
-              </div>
-            </form>
-          </div>
+          <BookingForm user={session.user} />
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@ const Hero = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Text Content */}
-          <div className="text-center lg:text-left space-y-6">
+          <div className="text-center lg:text-left space-y-6 animate__animated animate__fadeInLeft">
             <div className="inline-block px-4 py-1.5 mb-2 text-sm font-semibold tracking-wide text-primary uppercase bg-primary/10 rounded-full">
               Eid-ul-Adha 2026 Collection
             </div>

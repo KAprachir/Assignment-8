@@ -1,16 +1,18 @@
 "use client";
 import { authClient } from "@/lib/auth-client";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { FcGoogle } from "react-icons/fc";
 
 const LoginPage = () => {
-  // Initialize the hook
+  const router = useRouter();
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
 
-  // Handle form submission
   const onSubmit = async (formdata) => {
     const { data, error } = await authClient.signIn.email({
       email: formdata.email,
@@ -20,36 +22,41 @@ const LoginPage = () => {
     });
 
     if (error) {
-      // 4. Alert the user why it failed (e.g., "Invalid credentials")
-      alert(error.message || "Failed to login");
+      toast.error(error.message || "Failed to login. Please check your credentials.");
       return;
     }
 
-    // 5. If successful, redirect or refresh
+    toast.success("Login successful! Welcome back.");
     router.push("/");
     router.refresh();
   };
 
+  const handleGoogleLogin = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-base-200 flex items-center justify-center p-4">
-      <div className="card w-full max-w-sm bg-base-100 shadow-xl">
+      <div className="card w-full max-w-sm bg-base-100 shadow-xl border border-base-300">
         <div className="card-body">
-          <h2 className="card-title text-2xl font-bold justify-center mb-2">
-            Welcome Back
+          <h2 className="card-title text-3xl font-black justify-center mb-2 text-primary">
+            Login
           </h2>
-          <p className="text-center text-sm text-base-content/70 mb-4">
-            Login to your account
+          <p className="text-center text-sm text-base-content/60 mb-6">
+            Enter your credentials to access your account
           </p>
 
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {/* Email Field */}
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="form-control w-full">
               <label className="label">
-                <span className="label-text font-semibold">Email</span>
+                <span className="label-text font-bold">Email Address</span>
               </label>
               <input
                 type="email"
-                placeholder="email@example.com"
+                placeholder="example@mail.com"
                 className={`input input-bordered w-full focus:input-primary ${
                   errors.email ? "input-error" : ""
                 }`}
@@ -68,10 +75,9 @@ const LoginPage = () => {
               )}
             </div>
 
-            {/* Password Field */}
-            <div className="form-control w-full mt-4">
+            <div className="form-control w-full">
               <label className="label">
-                <span className="label-text font-semibold">Password</span>
+                <span className="label-text font-bold">Password</span>
               </label>
               <input
                 type="password"
@@ -92,61 +98,40 @@ const LoginPage = () => {
                   {errors.password.message}
                 </span>
               )}
-              <label className="label mt-1">
-                <a
-                  href="#"
-                  className="label-text-alt link link-hover link-primary"
-                >
-                  Forgot password?
-                </a>
-              </label>
             </div>
 
-            {/* Login Button */}
-            <div className="form-control mt-6">
-              <button type="submit" className="btn btn-primary w-full">
-                Login
+            <div className="form-control mt-8">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="btn btn-primary w-full text-lg shadow-lg hover:shadow-primary/20"
+              >
+                {isSubmitting ? (
+                  <span className="loading loading-spinner"></span>
+                ) : (
+                  "Login"
+                )}
               </button>
             </div>
           </form>
 
-          {/* Social Login Divider */}
-          <div className="divider text-xs uppercase text-base-content/50">
-            OR
+          <div className="divider text-xs uppercase text-base-content/40 font-bold my-6">
+            OR CONTINUE WITH
           </div>
 
-          {/* Social Login Button */}
           <button
             type="button"
-            className="btn btn-outline btn-neutral w-full gap-2"
-            onClick={() => console.log("Google Login Triggered")}
+            onClick={handleGoogleLogin}
+            className="btn btn-outline border-base-300 hover:bg-base-200 hover:text-base-content w-full gap-3 font-bold"
           >
-            {/* SVG Path remains same */}
-            <svg xmlns="http://w3.org" className="h-5 w-5" viewBox="0 0 48 48">
-              <path
-                fill="#FFC107"
-                d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
-              />
-              <path
-                fill="#FF3D00"
-                d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
-              />
-              <path
-                fill="#4CAF50"
-                d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
-              />
-              <path
-                fill="#1976D2"
-                d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
-              />
-            </svg>
-            Continue with Google
+            <FcGoogle size={24} />
+            Google Account
           </button>
 
-          <p className="text-center text-sm mt-4">
-            New here?{" "}
-            <a href="/register" className="link link-primary font-semibold">
-              Create account
+          <p className="text-center text-sm mt-8 text-base-content/70">
+            Don't have an account?{" "}
+            <a href="/register" className="link link-primary font-bold">
+              Register Now
             </a>
           </p>
         </div>
