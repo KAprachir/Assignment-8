@@ -9,8 +9,8 @@ export default function Home() {
     <div className="space-y-0">
       <Hero />
       <FeaturedAnimals />
-      <Tips />
       <TopBreeds />
+      <Tips />
       <WhyChooseUs />
     </div>
   );

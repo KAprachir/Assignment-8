@@ -29,16 +29,6 @@ const Tips = () => {
   return (
     <section className="py-16 bg-base-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* --- Top Breeds Section --- */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Top Featured Breeds
-          </h2>
-          <p className="text-base-content/60">
-            The most sought-after livestock for this season
-          </p>
-        </div>
-
         {/* --- Qurbani Tips Section --- */}
         <div className="bg-primary/5 rounded-3xl p-8 md:p-12 border border-primary/10">
           <div className="flex flex-col lg:flex-row gap-12">
