@@ -1,28 +1,7 @@
 import { CheckCircle, Info, Star } from "lucide-react";
 
 const Tips = () => {
-  const breeds = [
-    {
-      name: "Brahman",
-      origin: "Large Size",
-      desc: "Known for high meat yield and heat tolerance.",
-    },
-    {
-      name: "Sahiwal",
-      origin: "Premium Quality",
-      desc: "Famous for docile nature and excellent meat texture.",
-    },
-    {
-      name: "Jamnapari",
-      origin: "Top Goat Breed",
-      desc: "Large frame goats, ideal for a majestic sacrifice.",
-    },
-    {
-      name: "Bhutanese",
-      origin: "Sturdy & Healthy",
-      desc: "Compact but heavy, known for organic grazing.",
-    },
-  ];
+
 
   const qurbaniTips = [
     {
@@ -58,26 +37,6 @@ const Tips = () => {
           <p className="text-base-content/60">
             The most sought-after livestock for this season
           </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-          {breeds.map((breed, index) => (
-            <div
-              key={index}
-              className="card bg-base-200 shadow-sm hover:shadow-md transition-all border border-base-300"
-            >
-              <div className="card-body p-6">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="card-title text-primary">{breed.name}</h3>
-                  <Star className="w-5 h-5 text-warning fill-warning" />
-                </div>
-                <div className="badge badge-outline badge-sm mb-3">
-                  {breed.origin}
-                </div>
-                <p className="text-sm text-base-content/70">{breed.desc}</p>
-              </div>
-            </div>
-          ))}
         </div>
 
         {/* --- Qurbani Tips Section --- */}
