@@ -43,7 +43,7 @@ const AnimalCard = ({ animal }) => {
 
         <div className="mt-auto pt-6 border-t border-gray-50">
           <Link
-            href={`/animals/${animal.id}`}
+            href={`/details-page/${animal.id}`}
             className="btn btn-primary btn-block rounded-2xl shadow-lg shadow-primary/20"
           >
             View Full Details

@@ -5,9 +5,11 @@ import logo from "@/assets/logo.png";
 import Navlink from "./Navlink";
 import { authClient } from "@/lib/auth-client";
 import { User } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const { data: session } = authClient.useSession();
+  const router = useRouter();
 
   return (
     <div className="sticky top-0 z-50 w-full border-b border-base-200 bg-base-100/80 backdrop-blur-md">
@@ -65,12 +67,26 @@ const Navbar = () => {
             <div className="flex items-center gap-2">
               <Link
                 href="/my-profile"
-                className="btn btn-ghost btn-circle btn-sm md:btn-md"
+                className="btn btn-ghost btn-circle btn-sm md:btn-md overflow-hidden border border-base-200"
               >
-                <User size={20} />
+                {session.user.image ? (
+                  <Image
+                    src={session.user.image}
+                    alt={session.user.name}
+                    width={40}
+                    height={40}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <User size={20} />
+                )}
               </Link>
               <button
-                onClick={async () => await authClient.signOut()}
+                onClick={async () => {
+                  await authClient.signOut();
+                  router.push("/");
+                  router.refresh();
+                }}
                 className="btn btn-primary btn-sm md:btn-md shadow-md hover:shadow-lg transition-all"
               >
                 Log Out

@@ -8,7 +8,7 @@ const Navlink = () => {
   // Define links in an array for easy maintenance
   const links = [
     { name: "Home", href: "/" },
-    { name: "Animals", href: "/animals" },
+    { name: "All Animals", href: "/animals" },
     { name: "About", href: "/about" },
   ];
 
