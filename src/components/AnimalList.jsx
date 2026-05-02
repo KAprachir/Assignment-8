@@ -18,7 +18,7 @@ const AnimalList = ({ initialAnimals }) => {
   return (
     <div className="space-y-8 pb-12">
       {/* 1. Header & Filter Section */}
-      <div className="bg-white/50 backdrop-blur-md sticky top-0 z-20 border-b border-gray-100 px-4 py-6 rounded-b-3xl">
+      <div className="bg-white/50 backdrop-blur-md z-20 border-b border-gray-100 px-4 py-6 rounded-b-3xl">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
